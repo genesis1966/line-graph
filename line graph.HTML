@@ -1,0 +1,39 @@
+﻿data:text/html,<html>
+   <head>
+       <title>TP, AP, MP 关系曲线图</title>
+       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   </head>
+   <body>
+       <h1>TP, AP, MP 关系曲线图</h1>
+       <canvas id="myChart"></canvas>
+       <script>
+           const L = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+           const TP = [0, 10, 25, 45, 60, 70, 75, 77, 77, 75];
+           const AP = TP.map((tp, index) => index === 0 ? 0 : tp / L[index]);
+           const MP = [0];
+           for (let i = 1; i < TP.length; i++) {
+               MP.push(TP[i] - TP[i - 1]);
+           }
+           const ctx = document.getElementById('myChart').getContext('2d');
+           new Chart(ctx, {
+               type: 'line',
+               data: {
+                   labels: L,
+                   datasets: [
+                       { label: '总产量 (TP)', data: TP, borderColor: 'blue', fill: false },
+                       { label: '平均产量 (AP)', data: AP, borderColor: 'green', fill: false },
+                       { label: '边际产量 (MP)', data: MP, borderColor: 'red', fill: false }
+                   ]
+               },
+               options: {
+                   responsive: true,
+                   scales: {
+                       x: { title: { display: true, text: '劳动投入 (L)' } },
+                       y: { title: { display: true, text: '产量' } }
+                   },
+                   plugins: { legend: { position: 'top' } }
+               }
+           });
+       </script>
+   </body>
+   </html>
